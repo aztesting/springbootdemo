@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
         - name: springbootapp
-          image: springbootdemocontainerregistry.azurecr.io/springbootapp
+          image: myacrrepo012.azurecr.io/bhavana.az400/springboot-app
           ports:
           - containerPort: 80
