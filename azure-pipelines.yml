@@ -9,15 +9,15 @@ steps:
 - task: Docker@0
   displayName: 'Build an image'
   inputs:
-    azureSubscription: 'springboot-demo-poc'
-    azureContainerRegistry: '{"loginServer":"myacrrepo012.azurecr.io", "id" : "/subscriptions/2d16c185-a0af-4f23-a0fd-05a30b6c7195/resourceGroups/springboot-demo/providers/Microsoft.ContainerRegistry/registries/myacrrepo012"}'
+    azureSubscription: 'Free Trial'
+    azureContainerRegistry: '{"loginServer":"acrspringbootreg.azurecr.io", "id" : "/subscriptions/1b7cc8eb-f3b7-475c-8989-310f3375239d/resourceGroups/springboot-demo/providers/Microsoft.ContainerRegistry/registries/acrspringbootreg"}'
     includeLatestTag: true
 
 - task: Docker@0
   displayName: 'Push an image'
   inputs:
-    azureSubscription: 'springboot-app-demo'
-    azureContainerRegistry: '{"loginServer":"myacrrepo012.azurecr.io", "id" : "/subscriptions/2d16c185-a0af-4f23-a0fd-05a30b6c7195/resourceGroups/springboot-demo/providers/Microsoft.ContainerRegistry/registries/myacrrepo012"}'
+    azureSubscription: 'Free Trial'
+    azureContainerRegistry: '{"loginServer":"acrspringbootreg.azurecr.io", "id" : "/subscriptions/1b7cc8eb-f3b7-475c-8989-310f3375239d/resourceGroups/springboot-demo/providers/Microsoft.ContainerRegistry/registries/acrspringbootreg"}'
     action: 'Push an image'
     includeLatestTag: true
 
