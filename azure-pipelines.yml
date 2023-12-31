@@ -1,40 +1,31 @@
-# Docker
-# Build a Docker image
-# https://docs.microsoft.com/azure/devops/pipelines/languages/docker
+pool:
+  name: Azure Pipelines
+  demands: maven
 
-trigger:
-- main
+steps:
+- task: Maven@4
+  displayName: 'Maven pom.xml'
 
-resources:
-- repo: self
-
-variables:
-  tag: '$(Build.BuildId)'
-
-stages:
-- stage: Build
-  displayName: Build image
-  jobs:
-  - job: Build
-    displayName: Build
-    pool:
-      vmImage: ubuntu-latest
-    steps:
-    - task: Maven@4
-      inputs:
-        mavenPomFile: 'pom.xml'
-        goals: 'install'
-        publishJUnitResults: true
-        testResultsFiles: '**/surefire-reports/TEST-*.xml'
-        javaHomeOption: 'JDKVersion'
-        mavenVersionOption: 'Default'
-        mavenAuthenticateFeed: false
-        effectivePomSkip: false
-        sonarQubeRunAnalysis: false
-- task: Docker@2
+- task: Docker@0
+  displayName: 'Build an image'
   inputs:
-    command: 'build'
-    Dockerfile: '**/Dockerfile'
-- task: Docker@2
+    azureSubscription: 'springboot-demo-poc'
+    azureContainerRegistry: '{"loginServer":"myacrrepo012.azurecr.io", "id" : "/subscriptions/2d16c185-a0af-4f23-a0fd-05a30b6c7195/resourceGroups/springboot-demo/providers/Microsoft.ContainerRegistry/registries/myacrrepo012"}'
+    includeLatestTag: true
+
+- task: Docker@0
+  displayName: 'Push an image'
   inputs:
-    command: 'push'
+    azureSubscription: 'springboot-app-demo'
+    azureContainerRegistry: '{"loginServer":"myacrrepo012.azurecr.io", "id" : "/subscriptions/2d16c185-a0af-4f23-a0fd-05a30b6c7195/resourceGroups/springboot-demo/providers/Microsoft.ContainerRegistry/registries/myacrrepo012"}'
+    action: 'Push an image'
+    includeLatestTag: true
+
+- task: CopyFiles@2
+  displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
+  inputs:
+    Contents: 'aks-deploy-from-acr.yaml'
+    TargetFolder: '$(build.artifactstagingdirectory)'
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: drop'
