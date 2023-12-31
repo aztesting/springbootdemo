@@ -5,27 +5,3 @@ pool:
 steps:
 - task: Maven@4
   displayName: 'Maven pom.xml'
-
-- task: Docker@0
-  displayName: 'Build an image'
-  inputs:
-    azureSubscription: 'Free Trial'
-    azureContainerRegistry: '{"loginServer":"acrspringbootreg.azurecr.io", "id" : "/subscriptions/1b7cc8eb-f3b7-475c-8989-310f3375239d/resourceGroups/springboot-demo/providers/Microsoft.ContainerRegistry/registries/acrspringbootreg"}'
-    includeLatestTag: true
-
-- task: Docker@0
-  displayName: 'Push an image'
-  inputs:
-    azureSubscription: 'Free Trial'
-    azureContainerRegistry: '{"loginServer":"acrspringbootreg.azurecr.io", "id" : "/subscriptions/1b7cc8eb-f3b7-475c-8989-310f3375239d/resourceGroups/springboot-demo/providers/Microsoft.ContainerRegistry/registries/acrspringbootreg"}'
-    action: 'Push an image'
-    includeLatestTag: true
-
-- task: CopyFiles@2
-  displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
-  inputs:
-    Contents: 'aks-deploy-from-acr.yaml'
-    TargetFolder: '$(build.artifactstagingdirectory)'
-
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact: drop'
